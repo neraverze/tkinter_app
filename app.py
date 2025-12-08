@@ -29,14 +29,15 @@ def resizeImage(img, width):
 
 # reading the image at startup
 label = Label(root)
+status = Label(root, bd=1, relief=SUNKEN, anchor=E)
 curr_image = 0
-print(images)
 if (len(images) == 0):
     label.config(text='No Images Present In The Parent Directory')
 else:
     # opening the first image present
     my_img = ImageTk.PhotoImage(resizeImage(images[curr_image], 600))
     label.config(image=my_img)
+    status.config(text=f"Image {curr_image + 1} of {len(images)}")
     label.image = my_img
 
 
@@ -50,6 +51,7 @@ def showPrevImage():
     # opening the image
     my_img = ImageTk.PhotoImage(resizeImage(images[curr_image], 600))
     label.config(image=my_img)
+    status.config(text=f"Image {curr_image + 1} of {len(images)}")
     label.image = my_img
 
 # # showing the next image
@@ -62,6 +64,7 @@ def showNextImage():
     # opening the image
     my_img = ImageTk.PhotoImage(resizeImage(images[curr_image], 600))
     label.config(image=my_img)
+    status.config(text=f"Image {curr_image + 1} of {len(images)}")
     label.image = my_img
 
 
@@ -76,6 +79,7 @@ label.grid(row=0, column=0, columnspan=3, sticky='ew')
 leftBtn.grid(row=1, column=0, sticky='ew')
 quitBtn.grid(row=1, column=1, sticky='ew')
 rightBtn.grid(row=1, column=2, sticky='ew')
+status.grid(row=2, column=0, columnspan=3, sticky='ew')
 
 
 # main loop
