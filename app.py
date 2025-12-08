@@ -3,6 +3,10 @@ from tkinter import *
 # setting up the root and title
 root = Tk()
 
+e = Entry(root)
+e.insert(0, 'Hello, How are you?')
+e.pack()
+
 def myClick():
     myLabel = Label(root, text='Look, Saumya I love You!')
     myLabel.pack()
