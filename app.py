@@ -1,22 +1,18 @@
 from tkinter import *
+from tkinter import messagebox
 
 root = Tk()
-root.title("Radio Buttons")
+root.title("Message Boxes")
 
-MODES = [
-    ("Pepperoni", "Pepperoni"),
-    ("Cheese", "Cheese"),
-    ("Mushroom", "Mushroom"),
-    ("Onion", "Onion")
-]
+# showinfo, showerror, showwarning, askokcancel, askyesno, askquestion (same as yes no)
 
-pizza = StringVar()
-pizza.set("Pepperoni")
+def popup():
+    answer = messagebox.askquestion("Info Box", "I Love You Saumya")
+    print(answer)
 
-# Building the radio buttons
-index=0
-for text, mode in MODES:
-    Radiobutton(root, text=text, value=mode, variable=pizza).grid(row=0, column=index)
-    index += 1
+# returns True or False depending upon the yes no clicked or ok cancel clicked
+
+Button(root, text='Popup', command=popup).pack()
+Button(root, text='Quit', command=root.quit).pack(anchor=E)
 
 root.mainloop()
