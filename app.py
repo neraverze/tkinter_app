@@ -1,85 +1,82 @@
 from tkinter import *
+from PIL import ImageTk, Image
+import os
 
+# initializing the root
 root = Tk()
-root.title("Simple Calculator")
+root.title("Image Viewer")
 
-# creating the entry field
-e = Entry(root, width=45, borderwidth=5)
-e.grid(row=0, column=0, columnspan=3)
+# reading the list of images present in the folder
+IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp']
+images = []
+imageDir = os.path.dirname(os.getcwd())
+files = os.listdir(os.path.dirname(os.getcwd()))
+for file in files:
+    try:
+        name, extension = file.split(".")
+        if extension in IMAGE_EXTENSIONS:
+            filePath = os.path.join(imageDir, file)
+            images.append(filePath)
+    except Exception:
+        pass
 
-# displaying the numbers one by one on the entry field
-def displayNum(number):
-    # insert the current number at the end of the entry
-    e.insert(END, str(number))
-
-OPERANDS = []
-
-# adding logic for the add button
-def addBtnLogic():
-    # adding the operands
-    OPERANDS.append(int(e.get()))
-    e.delete(0, END)
-
-# showing the result
-def showResult():
-    # adding the current value
-    OPERANDS.append(int(e.get()))
-
-    # adding the values stored in operand
-    sum = 0
-    for num in OPERANDS:
-        sum += num
-    OPERANDS.clear()
-
-    print(sum)
-    # inserting the value into the entry field
-    e.delete(0, END)
-    e.insert(0, sum)
-
-# adding logic for clearing the screen
-def clearScreen():
-    e.delete(0, END)
-    # emptying the operands list
-    OPERANDS.clear()
-
-# creating the numeric buttons
-numeric_btns = []
-for i in range(0, 10):
-    btn = Button(root, text=f"{i}", padx=35, pady=20, command=lambda i=i: displayNum(i))
-    numeric_btns.append(btn)
-
-# placing the numeric btns
-rowStart = 1
-for i in range(9, 0, -3):
-    # running the column loop
-    for j in range(2, -1, -1):
-        numeric_btns[i - j].grid(row=rowStart, column= 2 - j, sticky='ew')
-    rowStart += 1
-
-# placing the zeroth button
-numeric_btns[0].grid(row=rowStart, column=0, sticky='ew')
-
-def negateBtnLogic():
-    OPERANDS.append(int(f"-{e.get()}"))
-    e.delete(0, END)
-    return
-
-def productBtnLogic():
-    return
-
-def slashBtnLogic():
-    return
+# resizes the image for better visibility
+def resizeImage(img, width):
+    image = Image.open(img)
+    image.thumbnail((width, width), Image.Resampling.LANCZOS)
+    return image
 
 
-# placing the auxillary buttons
-clearScBtn = Button(root, text='Clear', padx=35, pady=20, command=clearScreen).grid(row=rowStart, column=1, columnspan=2, sticky='ew')
-rowStart += 1
-addBtn = Button(root, text='+', padx=35, pady=20, command=addBtnLogic).grid(row=rowStart, column=0, sticky='ew')
-equalBtn = Button(root, text='=', padx=35, pady=20, command=showResult).grid(row=rowStart, column=1, columnspan=2, sticky='ew')
-rowStart += 1
-minusBtn = Button(root, text='-', padx=35, pady=20, command=negateBtnLogic).grid(row=rowStart, column=0, sticky='ew')
-productBtn = Button(root, text='*', padx=35, pady=20, command=productBtnLogic).grid(row=rowStart, column=1, sticky='ew')
-slashBtn = Button(root, text='/', padx=35, pady=20, command=slashBtnLogic).grid(row=rowStart, column=2, sticky='ew')
+# reading the image at startup
+label = Label(root)
+curr_image = 0
+print(images)
+if (len(images) == 0):
+    label.config(text='No Images Present In The Parent Directory')
+else:
+    # opening the first image present
+    my_img = ImageTk.PhotoImage(resizeImage(images[curr_image], 600))
+    label.config(image=my_img)
+    label.image = my_img
 
-# firing the main loop
+
+# # programming the buttons
+def showPrevImage():
+    global curr_image
+    curr_image -= 1
+    if curr_image < 0:
+        curr_image = len(images) - 1
+    
+    # opening the image
+    my_img = ImageTk.PhotoImage(resizeImage(images[curr_image], 600))
+    label.config(image=my_img)
+    label.image = my_img
+
+# # showing the next image
+def showNextImage():
+    global curr_image
+    curr_image += 1
+    if curr_image >= len(images):
+        curr_image = 0
+    
+    # opening the image
+    my_img = ImageTk.PhotoImage(resizeImage(images[curr_image], 600))
+    label.config(image=my_img)
+    label.image = my_img
+
+
+# # creating the buttons
+leftBtn = Button(root, text="<<", command=showPrevImage)
+rightBtn = Button(root, text=">>", command=showNextImage)
+quitBtn = Button(root, text="Exit Program", command=root.quit)
+
+
+# # positioning everything
+label.grid(row=0, column=0, columnspan=3, sticky='ew')
+leftBtn.grid(row=1, column=0, sticky='ew')
+quitBtn.grid(row=1, column=1, sticky='ew')
+rightBtn.grid(row=1, column=2, sticky='ew')
+
+
+# main loop
 root.mainloop()
