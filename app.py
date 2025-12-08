@@ -1,23 +1,22 @@
 from tkinter import *
 
 root = Tk()
-root.title("Frames")
+root.title("Radio Buttons")
 
-# creating a menu bar
-menuBar = LabelFrame(root)
-menuBar.grid(row=0, column=0)
+MODES = [
+    ("Pepperoni", "Pepperoni"),
+    ("Cheese", "Cheese"),
+    ("Mushroom", "Mushroom"),
+    ("Onion", "Onion")
+]
 
-# adding menu buttons
-fileBtn = Button(menuBar, text='File', padx=5)
-editBtn = Button(menuBar, text='Edit', padx=5)
-viewBtn = Button(menuBar, text='View', padx=5)
-helpBtn = Button(menuBar, text='Help', padx=5)
+pizza = StringVar()
+pizza.set("Pepperoni")
 
-
-# positioning the menu buttons
-fileBtn.grid(row=0, column=0)
-editBtn.grid(row=0, column=1)
-viewBtn.grid(row=0, column=2)
-helpBtn.grid(row=0, column=3)
+# Building the radio buttons
+index=0
+for text, mode in MODES:
+    Radiobutton(root, text=text, value=mode, variable=pizza).grid(row=0, column=index)
+    index += 1
 
 root.mainloop()
