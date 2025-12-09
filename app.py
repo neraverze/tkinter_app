@@ -7,22 +7,16 @@ root = Tk()
 root.title("File Opener")
 root.geometry("400x400")
 
-# this var in setHorizontal is necessary for some reason
-# which we don't know yet
-# so let's stick with it while using sliders
+# checkboxes return 1s or 0s, where 1 is checked
+result = IntVar()
 
-def setHorizontal(var):
-    vrt = vertical.get()
-    horizontal.set(vrt)
+my_lbl = Label(root)
+def checked():
+    my_lbl.config(text=result.get())
 
-
-# Sliders
-vertical = Scale(root, from_=-100, to=200, command=setHorizontal)
-horizontal = Scale(root, from_=0, to=100, orient=HORIZONTAL)
-vertical.pack()
-horizontal.pack()
-
-# Creating a button to set horizontal bar equal to vertical bar
-Button(root, text='Set Horizontal Bar', command=setHorizontal).pack()
+cb = Checkbutton(root, text='Check this', variable=result)
+cb.pack()
+Button(root, text='See Status', command=checked).pack()
+my_lbl.pack()
 
 root.mainloop()
