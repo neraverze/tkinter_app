@@ -5,29 +5,24 @@ import os
 
 root = Tk()
 root.title("File Opener")
-lbl = Label(root)
+root.geometry("400x400")
 
-def openFile():
-    global my_img
-    filename = filedialog.askopenfilename(initialdir=os.path.dirname(os.getcwd()), title='Select Image File to Open', filetypes=((".jpeg Files", "*.jpg"), ("All Files", "*.*")))
-    # displaying the image in another window
-    top = Toplevel()
-    top.title("Image Viewer")
-    
-    # opening the image
-    try:
-        originalImage = Image.open(filename)
-        originalImage.thumbnail((600, 600), resample=Image.Resampling.LANCZOS)
-        my_img = ImageTk.PhotoImage(originalImage)
-        Label(top, image=my_img).pack()
-    except Exception:
-        top.destroy()
-        lbl.config(text='Unable to Open File')
+# this var in setHorizontal is necessary for some reason
+# which we don't know yet
+# so let's stick with it while using sliders
 
-# Displaying an Image by letting the user select an image
-openFileBtn = Button(root, text='Select Image', command=openFile)
-openFileBtn.pack()
-lbl.pack()
+def setHorizontal(var):
+    vrt = vertical.get()
+    horizontal.set(vrt)
 
+
+# Sliders
+vertical = Scale(root, from_=-100, to=200, command=setHorizontal)
+horizontal = Scale(root, from_=0, to=100, orient=HORIZONTAL)
+vertical.pack()
+horizontal.pack()
+
+# Creating a button to set horizontal bar equal to vertical bar
+Button(root, text='Set Horizontal Bar', command=setHorizontal).pack()
 
 root.mainloop()
