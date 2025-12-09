@@ -7,16 +7,27 @@ root = Tk()
 root.title("File Opener")
 root.geometry("400x400")
 
-# checkboxes return 1s or 0s, where 1 is checked
-result = IntVar()
+# drop down menus
+options = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+]
 
-my_lbl = Label(root)
-def checked():
-    my_lbl.config(text=result.get())
+clicked = StringVar()
+clicked.set("Monday")
+drop = OptionMenu(root, clicked, *options)
+drop.pack()
+lbl = Label(root)
+lbl.pack()
 
-cb = Checkbutton(root, text='Check this', variable=result)
-cb.pack()
-Button(root, text='See Status', command=checked).pack()
-my_lbl.pack()
+def show():
+    lbl.config(text=clicked.get())
+
+Button(root, text='Show Selection', command=show).pack()
 
 root.mainloop()
